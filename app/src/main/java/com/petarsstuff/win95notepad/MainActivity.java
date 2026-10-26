@@ -12,7 +12,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.text.Editable;
+import android.text.Spanned;
 import android.text.TextWatcher;
+import android.text.style.CharacterStyle;
+import android.text.style.ParagraphStyle;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -40,6 +43,16 @@ public class MainActivity extends Activity {
     private static final int DARK = Color.rgb(128,128,128);
     private static final int NAVY = Color.rgb(0,0,128);
     private static final int WHITE = Color.WHITE;
+
+    private static final class PlainTextEditText extends EditText {
+        PlainTextEditText(Context context) { super(context); }
+
+        @Override public boolean onTextContextMenuItem(int id) {
+            // This also handles the app's Edit > Paste action. It strips rich clipboard styling.
+            if (id == android.R.id.paste) id = android.R.id.pasteAsPlainText;
+            return super.onTextContextMenuItem(id);
+        }
+    }
 
     private EditText editor;
     private TextView title, status;
@@ -106,7 +119,7 @@ public class MainActivity extends Activity {
         LinearLayout.LayoutParams eParams = new LinearLayout.LayoutParams(-1, 0, 1);
         eParams.setMargins(dp(2), dp(2), dp(2), dp(2));
         root.addView(editorFrame, eParams);
-        editor = new EditText(this);
+        editor = new PlainTextEditText(this);
         editor.setTextColor(Color.BLACK); editor.setTextSize(16);
         editor.setTypeface(Typeface.MONOSPACE, Typeface.NORMAL); editor.setBackgroundColor(WHITE);
         editor.setLetterSpacing(0f);
@@ -134,7 +147,16 @@ public class MainActivity extends Activity {
                 if (!suppressChange) dirty = true;
                 updateChrome();
             }
-            @Override public void afterTextChanged(Editable e) {}
+            @Override public void afterTextChanged(Editable e) {
+                // Android normally keeps font, size and colour spans from rich clipboard data.
+                // Strip any display formatting while preserving active IME composition spans.
+                for (CharacterStyle span : e.getSpans(0, e.length(), CharacterStyle.class)) {
+                    if ((e.getSpanFlags(span) & Spanned.SPAN_COMPOSING) == 0) e.removeSpan(span);
+                }
+                for (ParagraphStyle span : e.getSpans(0, e.length(), ParagraphStyle.class)) {
+                    if ((e.getSpanFlags(span) & Spanned.SPAN_COMPOSING) == 0) e.removeSpan(span);
+                }
+            }
         });
         editor.setOnClickListener(v -> updateChrome());
         editor.setOnKeyListener((v, code, event) -> { if (event.getAction() == KeyEvent.ACTION_UP) updateChrome(); return false; });
