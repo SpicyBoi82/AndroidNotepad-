@@ -1,6 +1,11 @@
 # Notepad 95 for Android
 
-An Android Java app styled after Windows 95 Notepad: navy title bar, grey classic menus, white monospaced editing area, and a line/column status bar.
+An Android Java app styled after Windows 95 Notepad: navy title bar, grey classic menus, white plain-text editing area, and a line/column status bar.
+
+## Plain system text edition (v1.1)
+- The editor, menu labels, window title and status bar all use Android's built-in monospaced system font, normal weight.
+- No rich-text styling or special font files. The title controls and menu checkmarks use simple ASCII.
+- Text editing preserves plain UTF-8 content with no typography transformations added by the app.
 
 ## Features
 - New, Open, Save and Save As via Android's document picker (Storage Access Framework).

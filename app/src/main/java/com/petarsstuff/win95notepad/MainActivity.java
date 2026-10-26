@@ -56,7 +56,7 @@ public class MainActivity extends Activity {
     }
     private TextView text(String s, int sp, int color, boolean bold) {
         TextView v = new TextView(this); v.setText(s); v.setTextSize(sp); v.setTextColor(color);
-        v.setGravity(Gravity.CENTER_VERTICAL); v.setTypeface(Typeface.DEFAULT, bold ? Typeface.BOLD : Typeface.NORMAL);
+        v.setGravity(Gravity.CENTER_VERTICAL); v.setTypeface(Typeface.MONOSPACE, Typeface.NORMAL);
         return v;
     }
 
@@ -81,11 +81,11 @@ public class MainActivity extends Activity {
 
         LinearLayout titleBar = new LinearLayout(this); titleBar.setGravity(Gravity.CENTER_VERTICAL);
         titleBar.setBackgroundColor(NAVY); titleBar.setPadding(dp(7), dp(4), dp(5), dp(4));
-        TextView icon = text("▤", 19, WHITE, true);
+        TextView icon = text("N", 15, WHITE, false);
         titleBar.addView(icon, new LinearLayout.LayoutParams(dp(25), dp(30)));
-        title = text("", 16, WHITE, true);
+        title = text("", 15, WHITE, false);
         titleBar.addView(title, new LinearLayout.LayoutParams(0, dp(30), 1));
-        TextView fauxWindow = text("_  □  ×", 15, WHITE, true);
+        TextView fauxWindow = text("[_] [X]", 13, WHITE, false);
         titleBar.addView(fauxWindow);
         root.addView(titleBar);
 
@@ -108,7 +108,11 @@ public class MainActivity extends Activity {
         root.addView(editorFrame, eParams);
         editor = new EditText(this);
         editor.setTextColor(Color.BLACK); editor.setTextSize(16);
-        editor.setTypeface(Typeface.MONOSPACE); editor.setBackgroundColor(WHITE);
+        editor.setTypeface(Typeface.MONOSPACE, Typeface.NORMAL); editor.setBackgroundColor(WHITE);
+        editor.setLetterSpacing(0f);
+        editor.setLineSpacing(0f, 1f);
+        editor.setBreakStrategy(android.text.Layout.BREAK_STRATEGY_SIMPLE);
+        editor.setHyphenationFrequency(android.text.Layout.HYPHENATION_FREQUENCY_NONE);
         editor.setGravity(Gravity.TOP | Gravity.START); editor.setPadding(dp(7), dp(7), dp(7), dp(7));
         editor.setInputType(android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_FLAG_MULTI_LINE |
                 android.text.InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
@@ -116,7 +120,7 @@ public class MainActivity extends Activity {
         editor.setScrollBarStyle(View.SCROLLBARS_INSIDE_INSET);
         editorFrame.addView(editor, new FrameLayout.LayoutParams(-1, -1));
 
-        status = text("", 12, Color.BLACK, false);
+        status = text("", 13, Color.BLACK, false);
         status.setBackground(panel(SILVER, DARK));
         status.setPadding(dp(7), dp(4), dp(7), dp(4));
         LinearLayout.LayoutParams sParams = new LinearLayout.LayoutParams(-1, dp(31));
@@ -138,7 +142,7 @@ public class MainActivity extends Activity {
     }
 
     private void addMenu(LinearLayout bar, String name, String[] items, Runnable[] actions) {
-        TextView b = text(name, 15, Color.BLACK, false);
+        TextView b = text(name, 14, Color.BLACK, false);
         b.setPadding(dp(11), dp(6), dp(11), dp(6));
         bar.addView(b, new LinearLayout.LayoutParams(-2, dp(40)));
         b.setOnClickListener(v -> popup(b, items, actions));
@@ -154,8 +158,8 @@ public class MainActivity extends Activity {
                 list.addView(divider, p); continue;
             }
             final Runnable action = actions[i];
-            String label = items[i].equals("Word Wrap") ? (wordWrap ? "✓  Word Wrap" : "    Word Wrap") : items[i];
-            TextView item = text(label, 15, Color.BLACK, false);
+            String label = items[i].equals("Word Wrap") ? (wordWrap ? "[x] Word Wrap" : "[ ] Word Wrap") : items[i];
+            TextView item = text(label, 14, Color.BLACK, false);
             item.setPadding(dp(20), dp(9), dp(20), dp(9));
             list.addView(item, new LinearLayout.LayoutParams(-1, dp(42)));
             item.setOnClickListener(v -> { if (activeMenu != null) activeMenu.dismiss(); activeMenu = null; action.run(); });
@@ -265,7 +269,7 @@ public class MainActivity extends Activity {
     }
     private void showAbout() {
         new AlertDialog.Builder(this).setTitle("About Notepad 95")
-                .setMessage("Notepad 95 for Android\n\nA Windows 95-inspired plain-text editor.\n\nUTF-8 • Open / Save / Save As • Find • Word Wrap\n\nUnofficial fan-made app. Not affiliated with Microsoft.")
+                .setMessage("Notepad 95 for Android\n\nA Windows 95-style plain text editor.\n\nUTF-8 | Open | Save | Find | Word Wrap\n\nUnofficial fan-made app. Not affiliated with Microsoft.")
                 .setPositiveButton("OK", null).show();
     }
     private void toast(String msg) { Toast.makeText(this, msg, Toast.LENGTH_SHORT).show(); }

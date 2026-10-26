@@ -1,6 +1,6 @@
 <resources>
     <style name="RetroTheme" parent="android:style/Theme.Material.Light.NoActionBar">
-        <item name="android:fontFamily">sans</item>
+        <item name="android:fontFamily">monospace</item>
         <item name="android:colorAccent">#000080</item>
         <item name="android:statusBarColor">#000080</item>
         <item name="android:navigationBarColor">#C0C0C0</item>
