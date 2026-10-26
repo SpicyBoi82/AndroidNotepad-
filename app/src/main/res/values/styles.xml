@@ -1,0 +1,12 @@
+<resources>
+    <style name="RetroTheme" parent="android:style/Theme.Material.Light.NoActionBar">
+        <item name="android:fontFamily">sans</item>
+        <item name="android:colorAccent">#000080</item>
+        <item name="android:statusBarColor">#000080</item>
+        <item name="android:navigationBarColor">#C0C0C0</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowActionModeOverlay">true</item>
+        <item name="android:windowLightNavigationBar">true</item>
+        <item name="android:windowBackground">#C0C0C0</item>
+    </style>
+</resources>
