@@ -7,6 +7,11 @@ An Android Java app styled after Windows 95 Notepad: navy title bar, grey classi
 - No rich-text styling or special font files. The title controls and menu checkmarks use simple ASCII.
 - Text editing preserves plain UTF-8 content with no typography transformations added by the app.
 
+## Plain-text paste fix (v1.2)
+- Pasting using either the menu or Android's selection toolbar forces plain text, discarding all source fonts and formatting.
+- The editor removes any remaining character and paragraph display styles, while preserving in-progress keyboard composition.
+- Fixed-width font applies consistently to pasted, typed and loaded text.
+
 ## Features
 - New, Open, Save and Save As via Android's document picker (Storage Access Framework).
 - UTF-8 plain text with support for a UTF-8 BOM on opening.
